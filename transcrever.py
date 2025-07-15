@@ -1,6 +1,6 @@
 import os
 import whisper
-from pydub import AudioSegment
+import ffmpeg
 import glob
 
 # Pastas
@@ -37,9 +37,13 @@ def converter_para_wav():
         
         print(f"🔄 Convertendo: {nome_arquivo}")
         try:
-            audio = AudioSegment.from_file(arquivo)
-            audio.export(arquivo_wav, format="wav")
+            # Usar ffmpeg para converter
+            stream = ffmpeg.input(arquivo)
+            stream = ffmpeg.output(stream, arquivo_wav)
+            ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, overwrite_output=True)
             print(f"✅ Convertido com sucesso: {arquivo_wav}")
+        except ffmpeg.Error as e:
+            print(f"❌ Erro ao converter {nome_arquivo}: {str(e.stderr.decode())}")
         except Exception as e:
             print(f"❌ Erro ao converter {nome_arquivo}: {str(e)}")
 

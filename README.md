@@ -16,19 +16,24 @@ Antes de começar, você precisa ter instalado em seu sistema:
 - Python 3.8 ou superior
 - pip (gerenciador de pacotes do Python)
 - ffmpeg (para conversão de áudio)
+- python3-dev (para compilar algumas dependências)
 
-### Instalando o ffmpeg
+### Instalando as dependências do sistema
 
 **No Ubuntu/Debian:**
 ```bash
+# Atualizar os repositórios
 sudo apt-get update
-sudo apt-get install ffmpeg
+
+# Instalar ffmpeg e dependências de desenvolvimento do Python
+sudo apt-get install ffmpeg python3-dev python3-pip python3-venv portaudio19-dev
 ```
 
 **No Windows:**
 1. Baixe o ffmpeg do site oficial: https://ffmpeg.org/download.html
 2. Extraia os arquivos
 3. Adicione o caminho da pasta bin ao PATH do sistema
+4. Instale o Visual Studio Build Tools com o workload "Desktop development with C++"
 
 ## 🚀 Instalação
 
