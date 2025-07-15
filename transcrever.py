@@ -4,7 +4,7 @@ import ffmpeg
 import glob
 
 # Pastas
-AUDIO_INPUT_DIR = "audios"  # Pasta para os áudios originais
+AUDIO_INPUT_DIR = "audios-originais"  # Pasta para os áudios originais
 AUDIO_DIR = "audios-convertidos"  # Pasta para os áudios convertidos em WAV
 OUTPUT_DIR = "transcricoes"
 
@@ -14,15 +14,18 @@ os.makedirs(AUDIO_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def converter_para_wav():
-    # Formatos suportados
-    formatos = ['*.mp3', '*.m4a', '*.ogg', '*.wma', '*.aac']
+    # Formatos suportados (mesmos do converter.py original)
+    formatos = ['*.mp4', '*.m4a', '*.mp3', '*.aac', '*.mov', '*.flac', '*.ogg', '*.wav']
     
     # Procurar por arquivos de áudio em todos os formatos
     arquivos_audio = []
     for formato in formatos:
-        arquivos_audio.extend(glob.glob(os.path.join(AUDIO_INPUT_DIR, formato)))
+        arquivos_encontrados = glob.glob(os.path.join(AUDIO_INPUT_DIR, formato))
+        arquivos_audio.extend(arquivos_encontrados)
+        if arquivos_encontrados:
+            print(f"Encontrados {len(arquivos_encontrados)} arquivos {formato}")
     
-    print(f"🔍 Encontrados {len(arquivos_audio)} arquivos para converter")
+    print(f"\n🔍 Total de arquivos encontrados: {len(arquivos_audio)}")
     
     # Converter cada arquivo para WAV
     for arquivo in arquivos_audio:
@@ -37,9 +40,9 @@ def converter_para_wav():
         
         print(f"🔄 Convertendo: {nome_arquivo}")
         try:
-            # Usar ffmpeg para converter
+            # Usar ffmpeg para converter (com as mesmas configurações do converter.py original)
             stream = ffmpeg.input(arquivo)
-            stream = ffmpeg.output(stream, arquivo_wav)
+            stream = ffmpeg.output(stream, arquivo_wav, acodec='pcm_s16le', ac=1, ar=16000)
             ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, overwrite_output=True)
             print(f"✅ Convertido com sucesso: {arquivo_wav}")
         except ffmpeg.Error as e:
