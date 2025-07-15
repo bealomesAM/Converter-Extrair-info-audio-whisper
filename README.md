@@ -1,0 +1,1 @@
+# Converter-Extrair-info-audio-whisper
